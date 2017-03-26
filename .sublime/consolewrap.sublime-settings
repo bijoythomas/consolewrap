@@ -5,6 +5,7 @@
     "consoleStr": "{title}, {variable}",
     "consoleFunc": ["console", "log"], // you can change default log statement for example ["logger", "info"] output: logger.info('title', variable);
     "single_quotes": false, // if true output: console.log('title', variable);
+    "semicolon" : true, // if false, will not insert semicolon at the end of the line
     "supportedFileTypes" : [
     	"text.html.vue",
     	"source.ts",

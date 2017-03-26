@@ -23,6 +23,8 @@ def getConsoleStr():
 def getConsoleSingleQuotes():
     return settings.get('single_quotes') or False
 
+def getSemicolonSetting():
+    return settings.get('semicolon') or False
 
 def get_indent(view, region, insert_before):
     matches = re.findall(r'^(\s*)[^\s]', view.substr(region))
@@ -50,6 +52,7 @@ def find_next_line(view, region):
 def get_wrapper(view, var, indent_str, insert_before):
     consoleStr = getConsoleStr()
     single_quotes = getConsoleSingleQuotes()
+    insertSemicolon = getSemicolonSetting()
     consoleFunc = getConsoleFunc()
     separator = ", "
 
@@ -57,6 +60,11 @@ def get_wrapper(view, var, indent_str, insert_before):
         text = var.replace("'", "\\'")
     else:
         text = var.replace('"', '\\"')
+
+    if insertSemicolon:
+      semicolon = ";"
+    else:
+      semicolon = ""
 
     consoleArr = consoleStr.split(separator)
 
@@ -70,7 +78,7 @@ def get_wrapper(view, var, indent_str, insert_before):
     tmpl = indent_str if insert_before else ("\n" + indent_str)
 
     quotes = "'" if single_quotes else "\""
-    a = "{4}({0}{1}{0}{2}{3});".format(quotes, t, separator, v , ".".join(consoleFunc))
+    a = ("{4}({0}{1}{0}{2}{3})" + semicolon).format(quotes, t, separator, v , ".".join(consoleFunc))
     a = a.format(title=text, variable=var)
 
     tmpl += a
